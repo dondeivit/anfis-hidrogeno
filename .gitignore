@@ -20,7 +20,7 @@ __pycache__/
 Thumbs.db
 
 # Modelos entrenados (si quieres versionarlos, borra estas líneas)
-models/*.pkl
+#models/*.pkl
 
 # Otros
 *.tmp
