@@ -88,13 +88,13 @@ Notas
 ```
 Dependencias
 ============
-*Python
-*numpy
-*pandas
-*matplotlib
-*scikit-fuzzy
-*scikit-learn
-*joblib
+* Python
+* numpy
+* pandas
+* matplotlib
+* scikit-fuzzy
+* scikit-learn
+* joblib
 
 Implementación ANFIS base
 ============
