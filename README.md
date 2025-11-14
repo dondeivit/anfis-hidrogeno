@@ -1,195 +1,98 @@
-📘 ANFIS para Predicción de Producción de Hidrógeno Verde
+ANFIS para Predicción de Producción de Hidrógeno Verde
+=======================================================
 
-Este proyecto implementa un modelo ANFIS (Adaptive Neuro-Fuzzy Inference System) para predecir la producción de hidrógeno verde mediante electrólisis del agua.
-El modelo utiliza como entradas:
+Este proyecto implementa un sistema ANFIS (Adaptive Neuro-Fuzzy Inference System) para modelar y predecir la producción de hidrógeno generada mediante electrólisis del agua.
 
-Tiempo de electrólisis (min)
+El modelo utiliza tres variables de entrada principales: tiempo de electrólisis, voltaje aplicado y cantidad de catalizador.
 
-Voltaje aplicado (V)
+El propósito del sistema es estimar con precisión la producción de hidrógeno a partir de datos experimentales reales, complementados con datos sintéticos generados mediante modelos de mezcla gaussiana (GMM). Además, se integra un proceso de optimización basado en PSO (Particle Swarm Optimization) para buscar la combinación de entradas que maximiza la producción de hidrógeno según el modelo entrenado.
 
-Cantidad de catalizador (µg)
+Estructura del proyecto
+=======================
 
-Y produce como salida:
-
-Hidrógeno generado (mL / mg / unidad experimental)
-
-El sistema se entrena usando:
-
-70% de datos reales (entrenamiento)
-
-30% de datos reales (validación no vista)
-
-Datos sintéticos filtrados generados mediante modelos de mezcla gaussiana (GMM)
-
-El modelo ANFIS se entrena mediante el método híbrido de Jang (mínimos cuadrados + backpropagation), con funciones de pertenencia gaussianas ajustadas automáticamente.
-
-📁 Estructura del Proyecto
+```text
 MODELO/
-├── data/                         # Datos reales y sintéticos (CSV)
-│   ├── datos_reales_entrenamiento.csv
-│   ├── datos_reales_validacion.csv
-│   └── datos_sinteticos_filtrados.csv
-│
-├── Images/                       # Gráficas generadas (MFs, resultados, etc.)
-│
-├── membership/                   # Sistema de funciones de pertenencia
-│   └── __init__.py
-│
-├── models/                       # Modelos entrenados y escaladores (.pkl)
-│   ├── anfis_model.pkl
+├── data/                       # Datos reales y sintéticos (CSV)
+├── Images/                     # Gráficas generadas
+├── membership/                 # Implementación de funciones de pertenencia
+├── models/                     # Modelos entrenados y escaladores (.pkl)
+│   ├── anfis_model.pkl         # Modelo ANFIS entrenado
 │   ├── scaler_X.pkl
 │   └── scaler_y.pkl
-│
-├── anfis.py                      # Implementación del modelo ANFIS
-├── Modelo_Proyecto.ipynb         # Notebook principal (entrenamiento + resultados)
-├── Metricas.ipynb                # Análisis de métricas del modelo
-├── PSO_INPUT.ipynb               # Ejemplo de optimización con PSO (opcional)
-│
-├── requirements.txt              # Dependencias del proyecto
-└── README.md                     # Este documento
+├── anfis.py                    # Definicion de ANFIS
+├── Modelo_Proyecto.ipynb       # Notebook principal
+├── Metricas.ipynb              # Metricas del modelo para no cargarlo nuevamente
+├── PSO_INPUT.ipynb             # Implementacion PSO para encontrar inputs que maximizan H2
+├── requirements.txt            # Dependencias
+└── README.md                   # Este archivo
+```
+Instalación
+===========
 
-🔧 Instalación Paso a Paso
+Para ejecutar este proyecto, primero clonar el repositorio:
 
-Sigue estos pasos para ejecutar el proyecto correctamente.
+    git clone https://github.com/dondeivit/anfis-hidrogeno.git
+    cd anfis-hidrogeno
 
-1️⃣ Clonar el repositorio
-git clone https://github.com/TU_USUARIO/TU_REPO.git
-cd TU_REPO
+Crear un entorno virtual:
 
-2️⃣ Crear un entorno virtual
-🔹 Windows (PowerShell):
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+Windows (PowerShell):
 
-🔹 Linux / Mac:
-python3 -m venv .venv
-source .venv/bin/activate
+    python -m venv .venv
+    .\.venv\Scripts\Activate.ps1
 
-3️⃣ Instalar dependencias
-pip install -r requirements.txt
+Linux / Mac:
 
+    python3 -m venv .venv
+    source .venv/bin/activate
 
-Esto instalará todas las librerías necesarias:
+Instalar dependencias (desde requirements.txt):
 
+    pip install -r requirements.txt
+
+Esto instalará automáticamente todas las librerías necesarias para entrenar el modelo ANFIS, generar gráficas, normalizar datos y ejecutar el notebook de optimización con PSO.
+
+Ejecución
+=========
+
+El flujo completo del modelo se encuentra en el archivo:
+
+    Modelo_Proyecto.ipynb
+
+Este notebook permite:
+
+    Entrenar el modelo ANFIS
+    Visualizar funciones de pertenencia iniciales y entrenadas
+    Validar el modelo con datos reales
+    Guardar el modelo entrenado
+    Generar métricas y gráficas de desempeño
+
+Optimización con PSO
+====================
+
+El notebook:
+
+    PSO_INPUT.ipynb
+
+Utiliza el modelo ANFIS entrenado para buscar:
+
+    La combinación de tiempo, voltaje y catalizador
+    que maximiza la producción de hidrógeno predicha por el modelo.
+
+Notas
+=====
+```text
+  Los modelos entrenados se guardan en la carpeta models/.
+  Las dependencias necesarias están en requirements.txt.
+```
+Dependencias
+============
+```text
+Python
 numpy
-
 pandas
-
 matplotlib
-
 scikit-fuzzy
-
 scikit-learn
-
-scipy
-
-pyswarm
-
 joblib
-
-seaborn
-
-🚀 Entrenamiento del Modelo ANFIS
-
-El flujo completo de entrenamiento está en:
-
-📌 Modelo_Proyecto.ipynb
-
-En ese notebook se realiza:
-
-Carga de datos reales y sintéticos
-
-Normalización mediante MinMaxScaler
-
-Definición de funciones de pertenencia iniciales
-
-Entrenamiento del modelo ANFIS
-
-Ajuste automático de MFs mediante backpropagation
-
-Validación con datos reales no vistos
-
-Graficado de MFs iniciales vs entrenadas
-
-Guardado del modelo entrenado
-
-🔬 Ejecución Rápida en Script (opcional)
-from joblib import dump
-import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
-from anfis import ANFIS, predict
-
-# 1. Cargar datos
-df = pd.read_csv("data/datos_reales_entrenamiento.csv")
-
-# 2. Separar X e y
-X = df[['tiempo', 'voltaje', 'catalizador']].values
-y = df[['hidrogeno']].values
-
-# 3. Normalizar
-scaler_X = MinMaxScaler().fit(X)
-scaler_y = MinMaxScaler().fit(y)
-X_scaled = scaler_X.transform(X)
-y_scaled = scaler_y.transform(y)
-
-# 4. Definir funciones de pertenencia iniciales (ver notebook)
-
-# 5. Entrenar
-anfis_model = ANFIS(X_scaled, y_scaled.flatten(), mfc)
-anfis_model.trainHybridJangOffLine(epochs=30, k=0.01, initialGamma=1000)
-
-# 6. Guardar modelo
-dump(anfis_model, "models/anfis_model.pkl")
-dump(scaler_X,   "models/scaler_X.pkl")
-dump(scaler_y,   "models/scaler_y.pkl")
-
-📈 Validación del Modelo
-from sklearn.metrics import mean_squared_error, r2_score
-
-y_pred_scaled = predict(anfis_model, X_test_scaled)
-y_pred = scaler_y.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
-
-rmse = mean_squared_error(y_test, y_pred, squared=False)
-r2   = r2_score(y_test, y_pred)
-
-print("RMSE:", rmse)
-print("R²:", r2)
-
-
-Valores esperados:
-
-RMSE ≈ 4
-
-R² ≈ 0.94
-
-🧠 Uso del Modelo Entrenado
-from joblib import load
-from anfis import predict
-import numpy as np
-
-# Cargar modelo
-anfis_model = load("models/anfis_model.pkl")
-scaler_X = load("models/scaler_X.pkl")
-scaler_y = load("models/scaler_y.pkl")
-
-# Ejemplo de predicción
-X_new = np.array([[15, 2.8, 10]])   # tiempo, voltaje, catalizador
-X_new_scaled = scaler_X.transform(X_new)
-y_pred_scaled = predict(anfis_model, X_new_scaled)
-y_pred = scaler_y.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
-
-print("Predicción de hidrógeno:", y_pred[0])
-
-📝 Notas Importantes
-
-Las funciones de pertenencia se ajustan durante el entrenamiento.
-
-Los parámetros mean y sigma son limitados para evitar inestabilidades.
-
-Los datos de entrada son normalizados en [0, 1] antes de ser usados en ANFIS.
-
-El modelo puede combinarse con PSO u otras metaheurísticas para optimización.
-
-📬 Contacto
-
-Puedes abrir un Issue en GitHub o contactarme directamente si necesitas ayuda o tienes sugerencias de mejora.
+```
