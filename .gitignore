@@ -1,0 +1,26 @@
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Cachés de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Checkpoints de Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+
+# Modelos entrenados (si quieres versionarlos, borra estas líneas)
+models/*.pkl
+
+# Otros
+*.tmp
