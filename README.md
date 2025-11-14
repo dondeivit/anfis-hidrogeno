@@ -84,15 +84,19 @@ Notas
 ```text
   Los modelos entrenados se guardan en la carpeta models/.
   Las dependencias necesarias están en requirements.txt.
+  Tener jupyter configurado
 ```
 Dependencias
 ============
-```text
-Python
-numpy
-pandas
-matplotlib
-scikit-fuzzy
-scikit-learn
-joblib
-```
+*Python
+*numpy
+*pandas
+*matplotlib
+*scikit-fuzzy
+*scikit-learn
+*joblib
+
+Implementación ANFIS base
+============
+Este proyecto se apoya en la implementación original de ANFIS creada por Tim Meggs, disponible en:
+https://github.com/twmeggs/anfis
